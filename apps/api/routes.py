@@ -18,7 +18,7 @@ from time import sleep
 
 matplotlib.use('agg')
 today = datetime.now()
-
+GPIO.setmode(BOARD)
 
 @blueprint.route('/api/test')
 def route_default():
@@ -176,7 +176,16 @@ def route_default():
         os.remove(Config.ASSETS_PATH + '/images/report-grayscale/' +
                   dt_string + '.png')
         print("kosong isi nya")
-        GPIO.setmode(BOARD)
+        GPIO.setup(8, GPIO.OUT)
+        GPIO.output(8, GPIO.HIGH)
+        sleep(1)
+        GPIO.output(8, GPIO.LOW)
+        sleep(1)
+
+        GPIO.output(8, GPIO.HIGH)
+        sleep(1)
+        GPIO.output(8, GPIO.LOW)
+        GPIO.cleanup()
     return jsonify({'result': data})
 
 
