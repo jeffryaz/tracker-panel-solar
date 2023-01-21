@@ -19,5 +19,5 @@ Flask-Cors==3.0.10
 rgb2gray==0.0.4
 Pillow==9.4.0
 OPi.GPIO==0.5.2
-
+APScheduler==3.9.1.post1
 # flask_mysqldb
