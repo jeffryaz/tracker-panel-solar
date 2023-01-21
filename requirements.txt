@@ -18,5 +18,6 @@ flask-mongoengine==1.0.0
 Flask-Cors==3.0.10
 rgb2gray==0.0.4
 Pillow==9.4.0
+OPi.GPIO==0.5.2
 
 # flask_mysqldb

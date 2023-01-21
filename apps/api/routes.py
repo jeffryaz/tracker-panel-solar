@@ -12,6 +12,9 @@ from apps.config import Config
 import numpy as np
 import cv2
 import matplotlib
+from orangepi.pi3 import BOARD
+import OPi.GPIO as GPIO
+from time import sleep 
 
 matplotlib.use('agg')
 today = datetime.now()
@@ -22,7 +25,7 @@ def route_default():
     data = Data().find({})
     dt_string = today.strftime("%d-%m-%Y_%H-%M")
     img_1 = Image.open(
-        Config.ASSETS_PATH + '/images/matahari1-min.jpg')
+        Config.ASSETS_PATH + '/images/matahari4-min.jpg')
 
     fig_1, axes_1 = plt.subplots(nrows=1, ncols=1, figsize=(15, 15))
     axes_1.imshow(rgb2gray(img_1), cmap='gray')
@@ -173,6 +176,7 @@ def route_default():
         os.remove(Config.ASSETS_PATH + '/images/report-grayscale/' +
                   dt_string + '.png')
         print("kosong isi nya")
+        GPIO.setmode(BOARD)
     return jsonify({'result': data})
 
 
