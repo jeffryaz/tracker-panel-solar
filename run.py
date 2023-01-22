@@ -33,7 +33,7 @@ app = create_app(app_config)
 
 CORS(app)
 
-sched.add_job(register_process, 'interval', seconds=3)
+sched.add_job(register_process, 'interval', args=[sched], seconds=5)
 sched.start()
 
 if not DEBUG:
@@ -45,4 +45,4 @@ if DEBUG:
     app.logger.info('ASSETS_ROOT      = ' + app_config.ASSETS_ROOT)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(threaded=True)
