@@ -222,3 +222,21 @@ def calculate_diagonal(c1, c2):
     }
 
     return data
+
+
+@blueprint.route('/api/transaction')
+def transaction_default():
+    mongo = Data()
+    session = mongo.db.start_session
+    session.start_transaction()
+    # data = mongo.insert({
+    #     'age': 22,
+    #     'lastName': 'jeffry',
+    #     'name': 'jeffry',
+    #     'public': True,
+    #     'username': 'jeffry2'
+    # })  # insert Data
+    session.abort_transaction()  # cancel all
+    # session.commit_transaction()  # commit CURD
+    data = mongo.find({'lastName': 'jeffry'})  # Get Data
+    return jsonify({'result': data})

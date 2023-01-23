@@ -16,3 +16,6 @@ class Data(object):
 
     def find(self, todo):  # find all
         return self.db.find(todo, self.collection_name)
+
+    def insert(self, todo):  # curd 1 data
+        return self.db.insert(todo, self.collection_name)

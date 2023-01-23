@@ -18,6 +18,8 @@ except KeyError:
 class Database(object):
     def __init__(self):
         self.client = MongoClient(app_config.ATLAS_URI)  # configure db url
+        self.start_session = self.client.start_session()
+        self.client = self.start_session.client
         self.db = self.client[app_config.DB_NAME]  # configure db name
         print("Connected to the MongoDB database!")
 
@@ -25,7 +27,7 @@ class Database(object):
         # element["created"] = datetime.now()
         # element["updated"] = datetime.now()
         inserted = self.db[collection_name].insert_one(
-            element)  # insert data to db
+            element, session=self.start_session)  # insert data to db
         return str(inserted.inserted_id)
 
     def find(self, criteria, collection_name, projection=None, sort=None, limit=0, cursor=False):  # find all from db
@@ -64,10 +66,12 @@ class Database(object):
         # element["updated"] = datetime.now()
         set_obj = {"$set": element}  # update value
 
-        updated = self.db[collection_name].update_one(criteria, set_obj)
+        updated = self.db[collection_name].update_one(
+            criteria, set_obj, session=self.start_session)
         if updated.matched_count == 1:
             return "Record Successfully Updated"
 
     def delete(self, id, collection_name):
-        deleted = self.db[collection_name].delete_one({"_id": ObjectId(id)})
+        deleted = self.db[collection_name].delete_one(
+            {"_id": ObjectId(id)}, session=self.start_session)
         return bool(deleted.deleted_count)
