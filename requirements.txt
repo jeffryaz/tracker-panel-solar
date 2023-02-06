@@ -20,4 +20,8 @@ rgb2gray==0.0.4
 Pillow==9.4.0
 OPi.GPIO==0.5.2
 APScheduler==3.9.1.post1
+gpio4==0.1.4
+python-periphery==2.3.0
+pyA20==0.2.12
+argparse==1.4.0
 # flask_mysqldb

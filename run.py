@@ -11,7 +11,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apps.config import config_dict
 from apps import create_app
 from flask_cors import CORS
-from apps.processSystem import register_process
+# from apps.processSystem import register_process
 
 sched = BackgroundScheduler()
 
@@ -33,8 +33,8 @@ app = create_app(app_config)
 
 CORS(app)
 
-sched.add_job(register_process, 'interval', args=[sched], seconds=5)
-sched.start()
+# sched.add_job(register_process, 'interval', args=[sched], seconds=60)
+# sched.start()
 
 if not DEBUG:
     Minify(app=app, html=True, js=False, cssless=False)

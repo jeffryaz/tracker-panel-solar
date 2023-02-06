@@ -13,6 +13,9 @@ import numpy as np
 import cv2
 import matplotlib
 
+
+from apps.processSystem.servoMotor import index_servo_motor
+
 matplotlib.use('agg')
 today = datetime.now()
 
@@ -238,5 +241,17 @@ def transaction_default():
     # })  # insert Data
     session.abort_transaction()  # cancel all
     # session.commit_transaction()  # commit CURD
+    data = mongo.find({'lastName': 'jeffry'})  # Get Data
+    return jsonify({'result': data})
+
+
+@blueprint.route('/api/testing2')
+def testing2_default():
+    mongo = Data()
+    session = mongo.db.start_session
+    session.start_transaction()
+    session.abort_transaction()
+
+    index_servo_motor('ok')
     data = mongo.find({'lastName': 'jeffry'})  # Get Data
     return jsonify({'result': data})

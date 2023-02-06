@@ -5,16 +5,24 @@ from time import sleep
 
 def stepperULN2003(stepperPIN, rotate=1):
     try:
+        GPIO.cleanup()
         GPIO.setmode(BOARD)
         GPIO.setwarnings(False)
         pins = stepperPIN
         latency = 0.01
         # latency = 0.05
 
-        # [A,B,D,C]
-        # full-step plus half-step (step in cycle, pin output)
-        sequence = [[1, 1, 1, 0],
-                    [0, 1, 1, 1]]
+        # 1 Putaran 1105 * 2 dengan latency = 0.01
+        sequence = [
+            [1, 1, 0, 0],
+            [0, 1, 1, 0],
+            [0, 0, 1, 1],
+            [1, 0, 0, 1],
+            [1, 1, 0, 0],
+            [0, 1, 1, 0],
+            [0, 0, 1, 1],
+            [1, 0, 0, 1]
+        ]
 
         # 1 Putaran 2150 dengan latency = 0.01
         # step(n=2150)
@@ -83,7 +91,6 @@ def stepperULN2003(stepperPIN, rotate=1):
                 sleep(latency)
 
             return None
-        # 1 Putaran 1030 dengan latency = 0.01
         step(n=rotate)
 
         GPIO.output(stepperPIN[0], False)
