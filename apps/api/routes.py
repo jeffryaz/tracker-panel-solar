@@ -252,6 +252,6 @@ def testing2_default():
     session.start_transaction()
     session.abort_transaction()
 
-    index_servo_motor('ok')
+    # index_servo_motor('ok')
     data = mongo.find({'lastName': 'jeffry'})  # Get Data
     return jsonify({'result': data})

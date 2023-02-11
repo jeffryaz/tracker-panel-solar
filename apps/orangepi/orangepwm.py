@@ -1,10 +1,10 @@
-from pyA20.gpio import gpio as GPIO
-import threading
+from apps.orangepi.pi3 import BOARD
+import OPi.GPIO as GPIO
 import time
 
 
-class OrangePwm(threading.Thread):
-    def __init__(self, frequency, gpioPin, gpioScheme=0):
+class OrangePwm():
+    def __init__(self, frequency, gpioPin, gpioScheme=BOARD):
         """
         Init the OrangePwm instance. Expected parameters are :
         - frequency : the frequency in Hz for the PWM pattern. A correct value may be 100.
@@ -19,7 +19,7 @@ class OrangePwm(threading.Thread):
         self.gpioPin = gpioPin
         self.terminated = False
         self.toTerminate = False
-        # GPIO.setmode(gpioScheme)
+        GPIO.setmode(gpioScheme)
 
     def start(self, dutyCycle):
         """
@@ -30,9 +30,8 @@ class OrangePwm(threading.Thread):
         stay HIGH for 1*(25/100) seconds on HIGH output, and 1*(75/100) seconds on LOW output.
         """
         self.dutyCycle = dutyCycle
-        GPIO.setcfg(self.gpioPin, GPIO.OUTPUT)
-        self.thread = threading.Thread(None, self.run, None, (), {})
-        self.thread.start()
+        GPIO.setup(self.gpioPin, GPIO.OUT)
+        self.run()
 
     def run(self):
         """
@@ -80,4 +79,5 @@ class OrangePwm(threading.Thread):
             time.sleep(0.01)
 
         GPIO.output(self.gpioPin, GPIO.LOW)
-        GPIO.setcfg(self.gpioPin, GPIO.INPUT)
+        GPIO.setup(self.gpioPin, GPIO.IN)
+        GPIO.cleanup()

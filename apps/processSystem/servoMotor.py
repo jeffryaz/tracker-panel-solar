@@ -10,9 +10,12 @@ from apps.processSystem.stepperMotor import stepperULN2003
 
 from argparse import ArgumentParser
 from apps.orangepi.mg996r import MG996R
+from pyA20.gpio import gpio
+from pyA20.gpio import port
+from pyA20.gpio import connector
+import threading
 
-start_degree = 360
-state_file = '.servo-state'
+start_degree = 0
 
 # Forward rotate
 stepperPIN = [3, 5, 11, 13]
@@ -23,8 +26,8 @@ stepperPIN = [3, 5, 11, 13]
 # Reverse rotate
 # stepperPIN = [13, 5, 11, 3]
 
-GPIO.setmode(BOARD)
 GPIO.setwarnings(False)
+GPIO.setmode(BOARD)
 GPIO.setup(stepperPIN[0], GPIO.OUT)
 GPIO.setup(stepperPIN[1], GPIO.OUT)
 GPIO.setup(stepperPIN[2], GPIO.OUT)
@@ -39,40 +42,35 @@ GPIO.output(stepperPIN[3], False)
 def index_servo_motor(sched):
 
     print('start')
-    frequency = 0.05
+    frequency = 50
     chipPWM = 0  # cek di /sys/class/pwm/ jika tersedia '/pwmchip8' maka chip nya 8. jika '/pwmchip0' maka chip nya 0
-    pinPWM = 0  # mengikuti chip
+    pinPWM = '0'  # mengikuti chip
 
     try:
+
         # stepperULN2003(stepperPIN, 1105 * 2)
-        # GPIO.cleanup()
+
+        # servo = MG996R(7, start_degree)
+        # servo.move(90, 10)
+        GPIO.setmode(BOARD)
+        GPIO.setup(7, GPIO.OUT)
+        while True:
+            GPIO.output(7, GPIO.HIGH)
+            # sleep(0.00001)
+            GPIO.output(7, GPIO.LOW)
+            # sleep(0.00001)
+        GPIO.cleanup()
 
         # servo = GPIO.PWM(chipPWM, pinPWM, frequency, 0, False)
-        # duty = 1
-        # while duty <= 17:
-        #     servo.duty_cycle(duty)
-        #     sleep(1)
-        #     duty = duty + 1
-        # servo.duty_cycle(100)
+        # print('servo', servo)
         # servo.start_pwm()
+        # servo.duty_cycle(10)
         # sleep(1)
+        # servo.duty_cycle(70)
         # servo.stop_pwm()
-
-        # pwm = PWM(0, 0)
-        # pwm.duty_cycle = 0
-        # pwm.frequency = 5000
-        # pwm.enable()
-        # pwm.duty_cycle = 1
-        # pwm.frequency = 5500
-        # pwm.close()
+        # GPIO.setup(7, GPIO.OUT)
+        # GPIO.output(7, 0)
         # GPIO.cleanup()
-
-        servo = MG996R('7', 360)
-        servo.move(120)
-        # with open(state_file, 'w') as f:
-        #     f.write(str(args.deg))
-
-        
 
     except KeyboardInterrupt:
         print("Bye.")
